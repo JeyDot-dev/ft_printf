@@ -4,7 +4,7 @@ LIBS_TARGET	= libft/${LIBFT}
 INCS		= libft/
 NAME		= ft_printf.a
 SRCS		= ft_printf.c
-OBJS		= ${SRC:.c=.o}
+OBJS		= ${SRCShttps://github.com/clemedon/Makefile_tutor:.c=.o}
 CC			= gcc
 CFLAGS		= -Wall -Wextra -Werror
 CPPFLAGS	= $(addprefix -I,$(INCS))
@@ -12,16 +12,16 @@ LDFLAGS		= $(addprefix -L,$(dir $(LIBS_TARGET)))
 LDLIBS		= $(addprefix -l,$(LIBS))
 RM			= rm -f
 
-${NAME}	:	${libft} ${OBJS}
+${NAME}	:	libbuild ${OBJS}
 			ar -rcs ${NAME} ${OBJS}
 bonus	:	${OBJS} ${OBJSBONUS}
 			ar -rcs ${NAME} ${OBJS} ${OBJSBONUS}
 
-exe	:	
-			${libft}
+libbuild	:
+			${MAKE} -C libft
+
+exe	:		libbuild
 			${CC} -o exe ${SRCS} ${CFLAGS} ${CPPFLAGS} ${LDFLAGS} ${LDLIBS} 
-libft	:
-			${MAKE} -C libft re
 
 all		:	${NAME}
 
@@ -30,4 +30,4 @@ clean	:
 fclean	:	clean
 			${RM} ${NAME}
 re		:	fclean all
-.PHONY	: libft
+.PHONY	: libft	exe
