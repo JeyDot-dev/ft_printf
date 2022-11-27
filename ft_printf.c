@@ -6,7 +6,7 @@
 /*   By: jsousa-a <jsousa-a@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:02:06 by jsousa-a          #+#    #+#             */
-/*   Updated: 2022/11/24 17:50:00 by jsousa-a         ###   ########.fr       */
+/*   Updated: 2022/11/27 17:38:38 by jsousa-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,18 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_printf(char *strparam, ...)
 {
 	va_list	args;
-	int		argsct;
+//	int		argsct;
 	int		i;
 
 	i = 0;
 	va_start(args, strparam);
-	argsct = ft_strlen(strparam);
-	while (i < argsct)
+	while (ft_isprint(strparam[i]))
 	{
+		if (strparam[i] == '%')
+		{
+		}
 
-		ft_putendl_fd(va_arg(args, char*), 1);
+		ft_putstr_fd(va_arg(args, char*), 1);
 		i++;
 	}
 	va_end(args);
@@ -35,5 +37,5 @@ void	ft_printf(char *strparam, ...)
 
 int	main(void)
 {
-	ft_printf("abc", "Oui", "Lolol", "Kawabunga");
+	ft_printf("abc%sabc%sabc%sabc", "Oui", "Lolol", "Kawabunga");
 }
