@@ -1,33 +1,37 @@
+SRCS		= ft_printf.c
+NAME		= libftprintf.a
 LIBFT		= libft.a
 LIBS		= ft
 LIBS_TARGET	= libft/${LIBFT}
 INCS		= libft/
-NAME		= ft_printf.a
-SRCS		= ft_printf.c
-OBJS		= ${SRCShttps://github.com/clemedon/Makefile_tutor:.c=.o}
+OBJS		= ${SRCS:.c=.o}
 CC			= gcc
 CFLAGS		= -Wall -Wextra -Werror
-CPPFLAGS	= $(addprefix -I,$(INCS))
-LDFLAGS		= $(addprefix -L,$(dir $(LIBS_TARGET)))
-LDLIBS		= $(addprefix -l,$(LIBS))
+#CPPFLAGS	= $(addprefix -I,$(INCS))
+#LDFLAGS		= $(addprefix -L,$(dir $(LIBS_TARGET)))
+#LDLIBS		= $(addprefix -l,$(LIBS))
 RM			= rm -f
 
 ${NAME}	:	libbuild ${OBJS}
+			mv ./${LIBS_TARGET} ${NAME}
 			ar -rcs ${NAME} ${OBJS}
-bonus	:	${OBJS} ${OBJSBONUS}
-			ar -rcs ${NAME} ${OBJS} ${OBJSBONUS}
-
-libbuild	:
-			${MAKE} -C libft
-
-exe	:		libbuild
-			${CC} -o exe ${SRCS} ${CFLAGS} ${CPPFLAGS} ${LDFLAGS} ${LDLIBS} 
+			ranlib ${NAME}
 
 all		:	${NAME}
+
+libbuild	:
+			${MAKE} -C libft bonus
+
+exe	:		${NAME}
+			${CC} -o exe tst.c ${NAME} ${CFLAGS} ${CPPFLAGS} ${LDFLAGS} ${LDLIBS} 
+
 
 clean	:
 			${RM} ${OBJS} ${OBJSBONUS}
 fclean	:	clean
 			${RM} ${NAME}
+
+ultraclean : fclean
+			${RM} exe a.out
 re		:	fclean all
-.PHONY	: libft	exe
+.PHONY	: 	exe

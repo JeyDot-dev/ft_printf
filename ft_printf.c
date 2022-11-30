@@ -6,36 +6,79 @@
 /*   By: jsousa-a <jsousa-a@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:02:06 by jsousa-a          #+#    #+#             */
-/*   Updated: 2022/11/27 17:38:38 by jsousa-a         ###   ########.fr       */
+/*   Updated: 2022/11/30 08:59:14 by jsousa-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "ft_printf.h"
+int	ft_im_a_free_man(char *str)
+{
+	int	a;
 
-#include "libft.h"
-#include <stdarg.h>
+	ft_putstr_fd(str, 1);
+	a = ft_strlen(str);
+	free(str);
+	return (a);
+}
+int	ft_im_not_a_free_man(char *str)
+{
+	int	a;
 
-size_t	ft_strlen(const char *s);
-void	ft_putendl_fd(char *s, int fd);
-void	ft_printf(char *strparam, ...)
+	if (!str)
+		return (write(1, "(null)", 6));
+	ft_putstr_fd(str, 1);
+	a = ft_strlen(str);
+	return (a);
+}
+int	ft_isparam(char c, va_list arg)
+{
+	if (c == 's')
+		return (ft_im_not_a_free_man(va_arg(arg, char*)));
+	else if (c == 'i' || c == 'd')
+		return (ft_im_a_free_man(ft_itoa(va_arg(arg, int))));
+	else if (c == '%')
+		return (write(1, "%", 1));
+	else if (c == 'c')
+	{
+		ft_putchar_fd(va_arg(arg, int), 1);
+		return (1);
+	}
+	else if (c == 'x')
+		return (ft_im_a_free_man(ft_itoa_base(va_arg(arg, unsigned int), "0123456789abcdef")));
+	else if (c == 'X')
+		return (ft_im_a_free_man(ft_itoa_base(va_arg(arg, unsigned int), "0123456789ABCDEF")));
+	else if (c == 'u')
+		return (ft_im_a_free_man(ft_itoa_base(va_arg(arg, unsigned int), "0123456789")));
+	else if (c == 'p')
+	{
+		ft_putstr_fd("0x", 1);
+		return (ft_im_a_free_man(ft_itoa_base(va_arg(arg, unsigned long long int), "0123456789abcdef")) + 2);
+
+	}
+	else
+		return (0);
+}
+int	ft_printf(const char *strparam, ...)
 {
 	va_list	args;
-//	int		argsct;
 	int		i;
+	int		ct;
 
+	ct = 0;
 	i = 0;
 	va_start(args, strparam);
-	while (ft_isprint(strparam[i]))
+	while (strparam[i])
 	{
 		if (strparam[i] == '%')
 		{
+			ct += ft_isparam(strparam[i + 1], args);
+			i += 2;
 		}
-
-		ft_putstr_fd(va_arg(args, char*), 1);
-		i++;
+		if (strparam[i] && strparam[i] != '%')
+		{
+			ft_putchar_fd(strparam[i++], 1);
+			ct++;
+		}
 	}
 	va_end(args);
-}
-
-int	main(void)
-{
-	ft_printf("abc%sabc%sabc%sabc", "Oui", "Lolol", "Kawabunga");
+	return (ct);
 }
