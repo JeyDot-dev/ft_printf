@@ -6,11 +6,12 @@
 /*   By: jsousa-a <jsousa-a@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:02:06 by jsousa-a          #+#    #+#             */
-/*   Updated: 2022/11/30 08:59:14 by jsousa-a         ###   ########.fr       */
+/*   Updated: 2022/11/30 09:37:25 by jsousa-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "ft_printf.h"
-int	ft_im_a_free_man(char *str)
+
+int	f(char *str)
 {
 	int	a;
 
@@ -19,7 +20,8 @@ int	ft_im_a_free_man(char *str)
 	free(str);
 	return (a);
 }
-int	ft_im_not_a_free_man(char *str)
+
+int	nf(char *str)
 {
 	int	a;
 
@@ -29,12 +31,13 @@ int	ft_im_not_a_free_man(char *str)
 	a = ft_strlen(str);
 	return (a);
 }
+
 int	ft_isparam(char c, va_list arg)
 {
 	if (c == 's')
-		return (ft_im_not_a_free_man(va_arg(arg, char*)));
+		return (nf(va_arg(arg, char *)));
 	else if (c == 'i' || c == 'd')
-		return (ft_im_a_free_man(ft_itoa(va_arg(arg, int))));
+		return (f(ft_itoa(va_arg(arg, int))));
 	else if (c == '%')
 		return (write(1, "%", 1));
 	else if (c == 'c')
@@ -43,20 +46,21 @@ int	ft_isparam(char c, va_list arg)
 		return (1);
 	}
 	else if (c == 'x')
-		return (ft_im_a_free_man(ft_itoa_base(va_arg(arg, unsigned int), "0123456789abcdef")));
+		return (f(ft_itoa_base(va_arg(arg, unsigned int), "0123456789abcdef")));
 	else if (c == 'X')
-		return (ft_im_a_free_man(ft_itoa_base(va_arg(arg, unsigned int), "0123456789ABCDEF")));
+		return (f(ft_itoa_base(va_arg(arg, unsigned int), "0123456789ABCDEF")));
 	else if (c == 'u')
-		return (ft_im_a_free_man(ft_itoa_base(va_arg(arg, unsigned int), "0123456789")));
+		return (f(ft_itoa_base(va_arg(arg, unsigned int), "0123456789")));
 	else if (c == 'p')
 	{
 		ft_putstr_fd("0x", 1);
-		return (ft_im_a_free_man(ft_itoa_base(va_arg(arg, unsigned long long int), "0123456789abcdef")) + 2);
-
+		return (f(ft_itoa_base(va_arg(arg, unsigned long long int),
+					"0123456789abcdef")) + 2);
 	}
 	else
 		return (0);
 }
+
 int	ft_printf(const char *strparam, ...)
 {
 	va_list	args;

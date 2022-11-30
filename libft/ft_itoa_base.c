@@ -6,67 +6,67 @@
 /*   By: jsousa-a <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:17:29 by jsousa-a          #+#    #+#             */
-/*   Updated: 2022/11/30 08:34:05 by jsousa-a         ###   ########.fr       */
+/*   Updated: 2022/11/30 09:38:10 by jsousa-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-	void	ft_strrev_base(char *str, int nb)
+void	ft_strrev_base(char *str, int nb)
+{
+	char	temp;
+	int		i[2];
+
+	i[0] = 0;
+	i[1] = nb - 1;
+	while (i[0] < nb / 2)
 	{
-		char	temp;
-		int		i[2];
-
-		i[0] = 0;
-		i[1] = nb - 1;
-		while (i[0] < nb / 2)
-		{
-			temp = str[i[1]];
-			str[i[1]--] = str[i[0]];
-			str[i[0]++] = temp;
-		}
+		temp = str[i[1]];
+		str[i[1]--] = str[i[0]];
+		str[i[0]++] = temp;
 	}
+}
 
-	int	ft_ctalloc_base(unsigned long long int n, int basei)
+int	ft_ctalloc_base(unsigned long long int n, int basei)
+{
+	unsigned long long int	ct;
+
+	ct = 0;
+	if (n == 0)
+		ct = 1;
+	while (n != 0)
 	{
-		unsigned long long int ct;
-
-		ct = 0;
-		if (n == 0)
-			ct = 1;
-		while (n != 0)
-		{
-			n = n / basei;
-			ct++;
-		}
-		return (ct);
+		n = n / basei;
+		ct++;
 	}
+	return (ct);
+}
 
-	void	ft_populate_base(char *s, char *base, unsigned long long int nb, int toalloc)
+void	ft_p(char *s, char *bs, unsigned long long int nb, int to_oc)
+{
+	int	i;
+	int	basei;
+
+	basei = ft_strlen(bs);
+	i = 0;
+	while (i < to_oc)
 	{
-		int	i;
-		int	basei;
-
-		basei = ft_strlen(base);
-		i = 0;
-		while (i < toalloc)
-		{
-			s[i++] = base[nb % basei];
-			nb = nb / basei;
-		}
+		s[i++] = bs[nb % basei];
+		nb = nb / basei;
 	}
+}
 
 char	*ft_itoa_base(unsigned long long int n, char *base)
 {
-	int			toalloc;
+	int			to_oc;
 	char		*snb;
-	toalloc = 0;
-	toalloc = ft_ctalloc_base(n, ft_strlen(base));
-	snb = ft_calloc(toalloc + 1, sizeof(*snb));
+
+	to_oc = 0;
+	to_oc = ft_ctalloc_base(n, ft_strlen(base));
+	snb = ft_calloc(to_oc + 1, sizeof(*snb));
 	if (!snb)
 		return (NULL);
-	ft_populate_base(snb, base, n, toalloc);
-	ft_strrev_base(snb, toalloc);
+	ft_p(snb, base, n, to_oc);
+	ft_strrev_base(snb, to_oc);
 	return (snb);
 }
-
